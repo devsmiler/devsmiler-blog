@@ -1,0 +1,175 @@
+---
+title: Flyweight
+date: 2021-07-07
+description: Flyweight 
+tags:
+  - DesignPattern
+  - python
+
+---
+# Flyweight Pattern
+
+1. 정의
+    - 하나의 객체를 공유하여 여러 개의 참조 객체를 만들어 이용하는 패턴
+2. FlyweightFactory란
+    - 여러 객체에서 서로 공유해서 사용할수 있는 Flyweight 객체를 생성한다.
+    - Flyweight 객체를 사용해서 Flyweight객 체를 가져올수 있는 메서드 getFlyweight()를 제공한다.
+3. Client 
+    - FlyweightFactory를 사용해서 Flyweight 을 만들어 내서 이용한다.
+4. 사용 시점 
+    - 상태를 가지지 않는 객체가 여러곳에서 중복되어 메모리가 낭비되고 있다.
+    - 메모리를 많이 사용하는 객체가존재한다.
+5. 사용효과
+    - 실행시에 객체 인스턴스의 개수를 줄여서 메모리를 절약할수 있다.
+    - 여러 가상 객체의 상태를 한 곳에 집중시켜놓을수있다.
+    - 어떤 클래스의 인스턴스가 아주 많이 필요하지만 모두 똑같은 방식으로 제어할 수 있는 경우에 융용하게 쓰임
+    - 다수의 개체에 공통적인 속성을 별도로 관리하여 메모리 효율을 높여준다.
+6. UML
+    - 
+
+    ![Flyweight%20Pattern%20312439098aac4fce87fa303f1195afc0/Untitled.png](Flyweight%20Pattern%20312439098aac4fce87fa303f1195afc0/Untitled.png)
+
+7. Code
+
+    ```python
+    class TextStyleFlyweight:
+        
+        def __init__(self, font_info, color):
+            self.font_info = font_info
+            self.color = color
+            
+        def get_font(self):
+            return self.font
+        
+        def get_color(self):
+            return self.color
+        
+        def to_string(self):
+            return "(" + self.font_info.to_string() + ',' + self.color + ")"
+    ```
+
+    ```python
+    class TextStyleFlyweightFactory:
+        _instance = None
+        pool = {}
+        
+        @classmethod
+        def get_instance(cls, *args, **kargs):
+            if not cls._instance :
+                print('?')
+                cls._instance = cls(*args, **kargs)
+                print(cls._instance )
+            return cls._instance 
+
+        def get_text_style_flyweight(self, name):
+            text_style = TextStyleFlyweightFactory.pool.get(name)
+            return text_style
+        
+        def put_text_style_flyweight(self, name, text_style):
+            TextStyleFlyweightFactory.pool[name] = text_style
+    ```
+
+    ```python
+    class FlyweightConstants:
+        
+        NUMBER_STYLE_NAME = 'number'
+        ANSWER_STYLE_NAME = 'answer'
+        
+        CLOUMN_WIDTH = 50
+        ROW_HEIGHT = 50
+        
+        OPERATORS = ("+","-","*","/")
+        EQUAL_CHAR = "="
+        
+        DEFAULT_NUMBER_FONT_INFO = FontInfo("Times",18)
+        DEFAULT_ANSWER_FONT_INFO = FontInfo("Times",26)
+    ```
+
+    ```python
+    class FontInfo:
+        def __init__(self, name, size):
+            self.name = name
+            self.size = size
+        
+        def get_name(self):
+            return self.name
+        
+        def set_name(self, name):
+            self.name = name
+        
+        def get_size(self):
+            return self.size
+        
+        def set_size(self, size):
+            self.size = size 
+        
+        def to_string(self):
+            return "(" + self.name + "," + str(self.size) + ")"
+    ```
+
+    ```python
+    class PrintAnswer:
+        
+        def __init__(self):
+            self.text_style_flyweight_factory = TextStyleFlyweightFactory.get_instance()
+            self.first_number = 0
+            self.second_number = 0 
+        
+        def print_result(self):
+            answers = [0,0,0,0]
+            
+            answers[0] = self.first_number + self.second_number
+            answers[1] = self.first_number - self.second_number
+            answers[2] = self.first_number * self.second_number
+            answers[3] = self.first_number / self.second_number
+            
+            i = 0
+            
+            for answer in answers:
+                operator = FlyweightConstants.OPERATORS[i]
+                text_array = ["", "", "", "",""]
+                text_array[0] = "" + str(self.first_number) + self._get_text_style(FlyweightConstants.NUMBER_STYLE_NAME).to_string()
+                text_array[1] = operator
+                text_array[2] = "" + str(self.second_number) + self._get_text_style(FlyweightConstants.NUMBER_STYLE_NAME).to_string()
+                text_array[3] = FlyweightConstants.EQUAL_CHAR
+                text_array[4] = "" + str(answer) + self._get_text_style(FlyweightConstants.ANSWER_STYLE_NAME).to_string()
+                
+                print(str(text_array))
+                i += 1
+            
+        def _get_text_style(self, name):
+            return self.text_style_flyweight_factory.get_text_style_flyweight(name)
+        
+        def set_first_number(self, first_number):
+            self.first_number = first_number
+        
+        def set_second_number(self, second_number):
+            self.second_number = second_number
+    ```
+
+    ```python
+    class Client:
+        def setup_text_style_flyweight_factory(self):
+            text_style_flyweight_factory = TextStyleFlyweightFactory.get_instance()
+            
+            name = FlyweightConstants.NUMBER_STYLE_NAME
+            text_style = TextStyleFlyweight(FlyweightConstants.DEFAULT_NUMBER_FONT_INFO,"red")
+            text_style_flyweight_factory.put_text_style_flyweight(name, text_style)
+            
+            name = FlyweightConstants.ANSWER_STYLE_NAME
+            text_style = TextStyleFlyweight(FlyweightConstants.DEFAULT_ANSWER_FONT_INFO,"black")
+            text_style_flyweight_factory.put_text_style_flyweight(name, text_style)
+        def main(self):
+            client = Client()
+            client.setup_text_style_flyweight_factory()
+            
+            print_answer = PrintAnswer()
+            
+            print_answer.set_first_number(10)
+            print_answer.set_second_number(20)
+            
+            print_answer.print_result()
+            
+    client = Client()
+    client.main()
+    ```
