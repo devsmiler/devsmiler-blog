@@ -1,0 +1,51 @@
+---
+title: DFS - 2 (Depth First Search)
+date: 2019-11-18
+description: DFS (Depth First Search)
+tags:
+  - Alogrithms
+  - python
+
+---
+## DFS응용 - 프로그래머스 예제
+
+dfs는 깊이 우선 탐색의 약자입니다. 이것을 이용해서 프로그래머스 예제중 하나인 타겟 넘버를 풀어 보겠습니다.
+DFS 는 보통 코테 단골 문제이지만, 정답률이 저조한 문제들 중 하나입니다.
+그렇기에 자세한 설명을 동반하겠습니다. 
+
+### 설명
+예를들어 [1,2,3,4]가 있고 타겟을 2로 정해보겠습니다. 우리가 선택할수 있는 연산은 +,-만 있습니다. 예를들어서 * 과 /가 있으면 더 복잡해질수 있습니다.
+
+
+
+
+
+### Source
+```python
+def dfs(arith,num_sum,idx,numbers,target):
+
+    if(arith=='plus'):
+        num_sum+=numbers[idx]    
+    elif(arith=='minus'):
+        num_sum-=numbers[idx]   
+    
+    if(idx == (len(numbers))-1):
+        if(num_sum==target):
+            global answer
+            answer+=1
+        return answer
+    else:    
+        dfs('plus',num_sum,idx+1,numbers,target)
+        
+        dfs('minus',num_sum,idx+1,numbers,target)
+    
+
+def solution(numbers, target):
+    global answer
+    answer=0
+    dfs('plus',0,0,numbers,target)
+    dfs('minus',0,0,numbers,target)
+
+    return answer
+
+```
