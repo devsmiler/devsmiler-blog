@@ -1,0 +1,333 @@
+---
+title: SOLID
+date: 2021-07-07
+description: DFS (Depth First Search)
+tags:
+  - Alogrithms
+  - python
+
+---
+# SOLID 원칙
+
+1. 단일 책임의 원칙 (Single responsibility principle)
+    - 단일 책임의 원칙 설명
+
+        1) 정의
+
+        - 클래스에는 하나의 책임만 있어야 한다.
+
+        2) 원칙 위반시 증상
+
+        - 기능 변경이 너무 발생하면 연쇄적으로 코드 수정을 해야 한다.
+        - 기능이 너무 복잡해서 재사용하기가 어렵다.
+        - 메서드 몸체의 크기가 너무 크다 .
+
+        3) 원칙 적용 방법
+
+        - 클래스를 변경하는 이유는 하나여야 한다는 기준으로 기능을 나눈다.
+
+        4) 적용 후 코드 
+
+        ```python
+        class Calculator :
+            def __init__(self):
+                self.add_operation = None
+                self.substract_operation = None
+                self.multiply_operation = None
+            
+            def calculate(self, operator, first_number, second_number):
+                
+                if operator is '+':
+                    answer = self.add_operation.operate(first_number, second_number)
+                
+                elif operator is '-':
+                    answer = self.substract_operation.operate(first_number, second_number)
+                
+                elif operator is '*':
+                    answer = self.multiply_operation.operate(first_number, second_number)
+                    
+                return answer
+                
+            def set_add_operation(self, add_operation):
+                self.add_operation = add_operation
+            
+            def set_substract_operation(self, substract_operation):
+                self.substract_operation = substract_operation
+            
+            def set_multiply_operation(self, multiply_operation):
+                self.multiply_operation = multiply_operation
+            **
+        class AddOperation :
+            def operate(self, first_number, second_number):
+                return first_number + second_number
+
+        class SubstractOperation :
+            def operate(self, first_number, second_number):
+                return first_number - second_number
+
+        class MultiplyOperation :
+            def operate(self, first_number, second_number):
+                return first_number * second_number**
+
+        class Client:
+            def main(self):
+                calculator = Calculator()
+                
+                calculator.set_add_operation(AddOperation())
+                calculator.set_substract_operation(SubstractOperation())
+                calculator.set_multiply_operation(MultiplyOperation())
+                
+                first_number = 100
+                second_number = 20
+
+                operator = "+"
+                answer = calculator.calculate(operator, first_number , second_number)
+                print(answer) # 120
+                
+                operator = "-"
+                answer = calculator.calculate(operator, first_number , second_number)
+                print(answer) # 80
+
+                operator = "*"
+                answer = calculator.calculate(operator, first_number , second_number)
+                print(answer) # 2000
+
+        client = Client()
+        client.main()
+        ```
+
+2.  개방 폐쇄 원칙 (Open closed principle)
+    - 개방 폐쇄 원칙 설명
+
+        1) 정의
+
+        - 객체는 확장에는 열려있어야 하지만 수정에는 닫혀 있어야 한다.
+
+        2) 원칙 위반시 증상
+
+        - 기능 확장을 할 때마다 기존코드를 수정해야 한다.
+        - if else 블록이 자주 등장한다 .
+        - 기능 확장을 위해 코드 수정시에 여러 클래스에서 다발적으로 진행이 된다.
+
+        3) 원칙 적용 방법 
+
+        - 변화 되는 부분을 추상화해서 변화를 고정시킨다.
+        - 기능 추가사항이 발생하면 클래스 상속을 통해 하위 클래스에서 기능을 구현한다.
+            - 기존 코드를 수정하지 않더라도 객체 상속의 다형성 원리에 의해 기능확장이 이루어진다.
+
+        4) 원칙 적용후 다이어그램
+
+        ![SOLID%20%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%8E%E1%85%B5%E1%86%A8%20f3387fd74e994e22b59524ecf6f2b082/Untitled.png](SOLID%20%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%8E%E1%85%B5%E1%86%A8%20f3387fd74e994e22b59524ecf6f2b082/Untitled.png)
+
+        5) 적용후 코드 
+
+        ```python
+        from abc import *
+
+        class AbstractOperation(metaclass=ABCMeta):
+            @abstractmethod
+            def operate(self, first_number, second_number):
+                pass
+
+        class Calculator :
+            def __init__(self):
+                self.add_operation = None
+                self.substract_operation = None
+                self.multiply_operation = None
+
+            def add(self, first_number, second_number):
+                answer = self.add_operation.operate(first_number, second_number)
+                return answer
+            
+            def substract(self, first_number, second_number):
+                answer = self.substract_operation.operate(first_number, second_number)
+                return answer
+            
+            def multiply(self, first_number, second_number):
+                answer = self.multiply_operation.operate(first_number, second_number)
+                return answer
+                
+            def set_add_operation(self, add_operation):
+                self.add_operation = add_operation
+            
+            def set_substract_operation(self, substract_operation):
+                self.substract_operation = substract_operation
+            
+            def set_multiply_operation(self, multiply_operation):
+                self.multiply_operation = multiply_operation
+            
+        class AddOperation(AbstractOperation):
+            def operate(self, first_number, second_number):
+                return first_number + second_number
+
+        class SubstractOperation(AbstractOperation):
+            def operate(self, first_number, second_number):
+                return first_number - second_number
+
+        class MultiplyOperation(AbstractOperation):
+            def operate(self, first_number, second_number):
+                return first_number * second_number
+
+        class Client:
+            def main(self):
+                calculator = Calculator()
+                
+                calculator.set_add_operation(AddOperation())
+                calculator.set_substract_operation(SubstractOperation())
+                calculator.set_multiply_operation(MultiplyOperation())
+                
+                first_number = 100
+                second_number = 20
+
+                answer = calculator.add(first_number , second_number)
+                print(answer) # 120
+                
+                answer = calculator.substract(first_number , second_number)
+                print(answer) # 80
+
+                answer = calculator.multiply(first_number , second_number)
+                print(answer) # 2000
+        ```
+
+3.  리스 코프 치환 원칙(Liskov Substitution principle)
+    - 리스코프 치환 원칙 설명
+        1. 정의 
+            - 부모 클래스의 인스턴스를 자식 클래스의 인스턴스로 대체해도 프로그램 기능은 동일해야 한다.
+        2. 원칙 위반시 증상 
+            - 객체의 타입 확인을 한다.(isinstance() 함수 사용)
+            - 자식 클래스 명이 연관 되거나 의존성이 있는 클래스에서 자주보인다.
+        3. 원칙 적용 방법 
+            - 부모 클래스와 자식 클래스 사이의 행위가 일관성이 있도록 추상화를 좀더 정교하게 한다.
+
+4. 인터페이스 분리 원칙(Interface segreation principle)
+    - 인터페이스 분릭 원칙 설명
+        1. 정의
+            - 인터페이스는 사용하는 클라이언트를 기준으로 분리해야한다.
+        2. 원칙 위반시 증상
+            - 인터페이스에 기능 변경이 발생하면 그 기능과 관계없는 클라이언트에도 수정사항이 발생한다.
+        3. 원칙 적용 방법 
+            - 기존 인터페이스를 기능별로 각 클라이언트에 특화시켜서 분리시킨다.
+        4. 변경사항 반영전
+            - 클라이언트는 계산 만하여 결과 값만 알려준다.
+            - 화면처리 클라이언트는 계산 결과 값을 화면에 보여준다.
+            - 서로 다른 기능을 하는 두개의 클라이언트는 한개의 계산기 클라이언트에 의존한다.
+        5. 원칙 적용후 UML
+            1. 
+
+            ![SOLID%20%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%8E%E1%85%B5%E1%86%A8%20f3387fd74e994e22b59524ecf6f2b082/Untitled%201.png](SOLID%20%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%8E%E1%85%B5%E1%86%A8%20f3387fd74e994e22b59524ecf6f2b082/Untitled%201.png)
+
+        6. 원칙 적용후 코드
+
+            ```python
+            from abc import *
+
+            class IDisplayable(metaclass = ABCMeta):
+                @abstractmethod
+                def display(self, operation, first_number, second_number):
+                    pass
+
+            class AbstractOperation(metaclass=ABCMeta):
+                @abstractmethod
+                def operate(self, first_number, second_number):
+                    pass
+                
+                @abstractmethod
+                def get_operator(self):
+                    pass
+                
+                def is_invalid_number(self, first_number, second_number):
+                    return False
+                
+            class Calculator(IDisplayable):
+                
+                def __init__(self):
+                    self.operation = None
+
+                def calculate(self, first_number, second_number):        
+                    answer = self.operation.operate(first_number, second_number)    
+                    return answer 
+                
+                def display(self, operation, first_number, second_number):
+                    answer = operation.operate(first_number, second_number)
+                    operator = operation.get_operator()
+                    
+                    print("{first_number} {operator} {second_number} = {answer}".format(first_number=first_number, operator=operator, second_number=second_number, answer=answer))
+                
+                def set_operation(self, operation):
+                    self.operation = operation
+                    
+            class AddOperation(AbstractOperation):
+                def operate(self, first_number, second_number):
+                    return first_number + second_number
+                
+                def get_operator(self):
+                    return '+'
+
+            class SubstractOperation(AbstractOperation):
+                def operate(self, first_number, second_number):
+                    return first_number - second_number
+
+                def get_operator(self):
+                    return '-'
+                
+            class MultiplyOperation(AbstractOperation):
+                def operate(self, first_number, second_number):
+                    return first_number * second_number
+
+                def get_operator(self):
+                    return '*'
+                
+            class DivideOperation(AbstractOperation):
+                def operate(self, first_number, second_number):        
+                    if self.is_invalid_number(first_number, second_number) :
+                        return 'Invalid Number'
+                    return first_number / second_number
+                
+                def is_invalid_number(self, first_number, second_number):
+                    if second_number == 0:
+                        return True
+                    return False
+                
+                def get_operator(self):
+                    return '/'
+
+            class CalcClient:
+                def request(self, calculator, operation, first_number, second_number):
+                    calculator.set_operation(operation)
+                    
+                    answer = calculator.calculate(first_number, second_number)
+                    
+                    return answer
+            class DisplayClient:
+                def request(self, calculator, operation, first_number,second_number):
+                    calculator.display(operation, first_number, second_number)
+                
+                
+            class Client:
+                def main(self):
+                    calculator = Calculator()
+                    
+                    
+                    first_number = 100
+                    second_number = 0
+
+                    calculator = Calculator()
+                    
+            #         operation = AddOperation()
+                    operation = DivideOperation()
+                    calc_client = CalcClient()
+                    
+                    answer = calc_client.request(calculator, operation, first_number, second_number)
+                    
+                    
+                    display_client = DisplayClient()
+            ```
+
+5. 의존 역전 원칙 (Dependency Inversion principle)
+    1. 설명
+        - 고수준 모듈은 저수준 모듈에 종속되어서는 안된다.
+    2. 원칙 위반시 증상
+        - 저수준에서 변경 발생 가능성이 많은데 변경될 때ㅔ 마다 고수준 모듈에 수정사항이 발생한다.
+    3. 원칙 적용 방법
+        - 고수준 모듈의 변화되는 부분을 추상화 한다.
+        - 저수준 모듈을 추상화에 의존시킨다.
