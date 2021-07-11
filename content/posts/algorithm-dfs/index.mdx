@@ -1,0 +1,39 @@
+---
+title: DFS (Depth First Search)
+date: 2019-11-07
+description: DFS (Depth First Search)
+tags:
+  - Alogrithms
+  - python
+
+---
+
+
+## 내용
+이번에는 저번 시간에 만들어 보았던, 재귀 용법을 이용해서 DFS 를 구현해보려고 합니다. DFS는 정말 알고리즘에서는 가장 단골 문제중 하나이고, 길 찾기 알고리즘 등에 쓰이는등 정말 다양하게 쓰이는 알고리즘 중 하나입니다. 
+이번 포스팅에서도 코드와 함께 알고리즘을 설명하도록 하겠습니다. 
+## 구현 및 설명
+<img src="https://images.velog.io/images/madfinger/post/39c3d0e1-59c0-4db6-9132-128f795d0be4/image.png" width="100%">
+<img src="https://images.velog.io/images/madfinger/post/febd1506-bc16-4a19-b9c1-d3a4bedef9a4/image.png" width="100%">
+<img src="https://images.velog.io/images/madfinger/post/d12a4d94-dad7-4a0d-879f-3f307e57343a/image.png" width="100%">
+
+
+
+
+### Source code
+
+```python
+def DFS(v):
+    if v > 7 :
+        return 
+    else :
+        print(v, end=' ')
+        DFS(v * 2)
+        DFS(v * 2 + 1)
+
+if __name__ == "__main__":
+    DFS(1)          
+```
+<br/>
+
+<img src="https://images.velog.io/images/madfinger/post/9e9532ee-041a-4b57-a087-6e0e0af4d909/image.png" width="100%">

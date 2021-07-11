@@ -5,7 +5,14 @@ const googleAnalyticsTrackingId = process.env.GOOGLE_ANALYTICS_ID
 
 module.exports = {
   siteMetadata: {
-    siteTitleAlt: `Minimal Blog - Gatsby Theme`,
+    siteTitle: 'Devsmile',
+    siteTitleAlt: ` Devsmiler's personal blog`,
+    siteDescription: `Devsmiler's personal blog`,
+    siteUrl: `https://devsmiler.github.io/`,
+    siteHeadline: `Devsmiler's personal blog`,
+    siteImage: '/banner.jpg',
+    author: `@Devsmile`,
+    siteLanguage: 'ko',
   },
   plugins: [
     {
@@ -18,19 +25,23 @@ module.exports = {
             slug: `/blog`,
           },
           {
-            title: `About`,
+            title: `Devsmile?`,
             slug: `/about`,
           },
         ],
         externalLinks: [
           {
-            name: `Twitter`,
-            url: `https://twitter.com/lekoarts_de`,
+            name: `Github`,
+            url: `https://github.com/devsmiler`,
           },
           {
             name: `Homepage`,
-            url: `https://www.lekoarts.de?utm_source=minimal-blog&utm_medium=Starter`,
+            url: `https://devsmiler.github.io/web-front/#portfolio`,
           },
+          {
+            name: `Portfolio`,
+            url: `https://www.notion.so/smiledeveloper/MINKYU-KIM-Smile-Developer-2dd4d7b586fa456f8937eedf3e367364`,
+          }
         ],
       },
     },
