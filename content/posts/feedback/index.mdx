@@ -1,0 +1,75 @@
+---
+title: TIL-2021-07-14
+date: 2021-07-14
+description: TIL
+tags:
+  - TIL
+---
+
+
+F-lab 템플릿,  
+용어 통일, 어떤 API 개발, 면접관이 호기심을 끌만한것들, 
+ 구체적인것들의 설명이 필요하다. 인프라,   TPS 는 얼마나 되는지 자세한 설명들,
+
+CI/CD 어떤 파이프라인으로 구축을 했고, deploy, build  
+
+
+괄호 없애자, 프론트 및 백엔드  제거 
+
+크롤링 개선 작업. 
+
+개선작업을 어떻게 했는지에 대한 것들, 
+
+질문에서 쓸 수 있다.
+
+어플리케이션 -> 애플리케이션 
+
+고객사에서 데이터 센터에 접근 가능하게 위한 SSO 기능 개발 
+
+전체적으로, 통일이 필요  
+
+
+- 쓰레드 세이프, 공유 자원 관리
+- 100명의 사람이 동시에 100번씩 
+- AtomicInteger  
+- CAS 알고리즘
+- java.util.concurrent.atomic
+- 낙관적인 락, 비관적인 락 -> JPA Annotation (Entity 속성 )  
+
+JAVA 8 Garbage Collector  자바 버전별로 가비지컬랙터 컬랙션 
+G1 GC,  Parrarrel GC,  버전별 가비지컬랙터   실무에서는 G1 GC(default)를 많이 씁니다.  
+GC 튜닝 ->  명령어를 하나 치면 
+
+Heap dump를 뜨는 명령어가 있습니다. 
+
+Method 영역에 저장이 됩니다. - > memory leak이 발생합니다. 
+Static  Arraylist -> 메소드 영역 
+
+담는 로직이 있습니다 -> 메모리릭이 발생합니다.  -> Out of Memory
+
+가장 처음에 로드되는 Static , 
+
+Static{
+
+} -> 생성자보다 먼저 호출된다. 
+
+JVM stack 영역에 , 실제값이 들어가면 primitive 타입 , Reference 
+
+Collections -> Arrays를 부르면 Human readable한 결과를 만듭니다. 
+
+Arraylist -> 기본 사이즈 10
+
+자바에서 패키지를 잘 묶는것도 실력
+
+Effective Java
+
+# Object, enum, 예외 
+- 실제
+- Abstract interface
+정확하게 읽어야한다.
+
+
+
+
+
+
